@@ -21,4 +21,19 @@ describe("Gilded Rose", function() {
 
     expect(items[0].quality).toBe(42);
   });
+
+  // to test for items that are not aged brie, backstage passes or sulfuras
+  it("normal item quality should decrease normally if sellIn is above 0", function() {
+    const gildedRose = new Shop([new Item("Normal Item", 10, 40)]);
+    const items = gildedRose.updateQuality();
+
+    expect(items[0].quality).toBe(39);
+  });
+
+  it("normal item quality should decrease even more if sellIn falls below 0", function() {
+    const gildedRose = new Shop([new Item("Normal Item", 0, 40)]);
+    const items = gildedRose.updateQuality();
+
+    expect(items[0].quality).toBe(38);
+  });
 });
