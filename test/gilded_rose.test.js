@@ -43,4 +43,34 @@ describe("Gilded Rose", function() {
 
     expect(items[0].quality).toBe(0);
   });
+
+  // to test for sulfuras
+  it("sulfuras' quality should not alter", function() {
+    const gildedRose = new Shop([new Item("Sulfuras, Hand of Ragnaros", 10, 80)]);
+    const items = gildedRose.updateQuality();
+    
+    expect(items[0].quality).toBe(80);
+  });
+
+  it("sulfuras' quality should not alter if sellIn < 0", function() {
+    const gildedRose = new Shop([new Item("Sulfuras, Hand of Ragnaros", -1, 80)]);
+    const items = gildedRose.updateQuality();
+
+    expect(items[0].quality).toBe(80);
+  });
+
+  // to test for items that are not aged brie, backstage passes or sulfuras
+  it("normal item quality should decrease normally if sellIn is above 0", function() {
+    const gildedRose = new Shop([new Item("Normal Item", 10, 40)]);
+    const items = gildedRose.updateQuality();
+
+    expect(items[0].quality).toBe(39);
+  });
+
+  it("normal item quality should decrease even more if sellIn falls below 0", function() {
+    const gildedRose = new Shop([new Item("Normal Item", 0, 40)]);
+    const items = gildedRose.updateQuality();
+
+    expect(items[0].quality).toBe(38);
+  });
 });
