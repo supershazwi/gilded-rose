@@ -65,6 +65,10 @@ class Shop {
     return this.items;
   }
 
+  updateSellIn(item) {
+    item.sellIn -= 1;
+  }
+
   updateValueIncreaseItemQuality(item) {
     switch (true) {
       case item.sellIn < 0:
