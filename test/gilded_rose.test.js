@@ -23,6 +23,13 @@ describe("Gilded Rose", function() {
   });
 
   // to test for backstage passes
+  it('back pass quality should increase by 1 when sellIn is above 10 days', function () {
+    const gildedRose = new Shop([new Item('Backstage passes to a TAFKAL80ETC concert', 12, 40)]);
+    const items = gildedRose.updateQuality();
+
+    expect(items[0].quality).toBe(41);
+  });
+
   it('back pass quality should increase by 2 when sellIn is 10 days or less', function () {
     const gildedRose = new Shop([new Item('Backstage passes to a TAFKAL80ETC concert', 10, 40)]);
     const items = gildedRose.updateQuality();
@@ -57,6 +64,21 @@ describe("Gilded Rose", function() {
     const items = gildedRose.updateQuality();
 
     expect(items[0].quality).toBe(80);
+  });
+
+  // to test for conjured items
+  it("conjured item quality should decrease normally if sellIn is above 0", function() {
+    const gildedRose = new Shop([new Item("Conjured Item", 10, 40)]);
+    const items = gildedRose.updateQuality();
+
+    expect(items[0].quality).toBe(38);
+  });
+
+  it("conjured item quality should decrease twice faster if sellIn is below 0", function() {
+    const gildedRose = new Shop([new Item("Conjured Item", 0, 40)]);
+    const items = gildedRose.updateQuality();
+
+    expect(items[0].quality).toBe(36);
   });
 
   // to test for items that are not aged brie, backstage passes or sulfuras
