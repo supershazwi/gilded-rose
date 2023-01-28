@@ -9,86 +9,102 @@ class Item {
 class Shop {
   constructor(items=[]){
     this.items = items;
-    this.valueIncreaseItemNames = ['Aged Brie'];
-    this.expireItemNames = ['Backstage passes to a TAFKAL80ETC concert'];
-    this.legendaryItemNames = ['Sulfuras, Hand of Ragnaros'];
-    this.conjuredItemNames = ['Conjured Item'];
   }
 
   updateQuality() {
     for (let i = 0; i < this.items.length; i++) {
-      if (this.legendaryItemNames.includes(this.items[i].name)) {
-        break;
-      }
-
-      this.updateSellIn(this.items[i]);
-
-      if (this.expireItemNames.includes(this.items[i].name)) {
-        this.updateExpireItemQuality(this.items[i]);
-      } else if (this.valueIncreaseItemNames.includes(this.items[i].name)) {
-        this.updateValueIncreaseItemQuality(this.items[i]);
-      } else if (this.conjuredItemNames.includes(this.items[i].name)) {
-        this.updateConjuredItemQuality(this.items[i]);
-      } else {
-        this.updateNormalItemQuality(this.items[i]);
-      }
+      this.items[i].updateSellIn();
+      this.items[i].updateQuality();
     }
 
     return this.items;
   }
+}
 
-  updateSellIn(item) {
-    item.sellIn -= 1;
+class ValueIncreaseItem extends Item {
+  updateSellIn() {
+    this.sellIn -= 1;
   }
-
-  updateValueIncreaseItemQuality(item) {
+  
+  updateQuality() {
     switch (true) {
-      case item.sellIn < 0:
-        item.quality += 2;
+      case this.sellIn < 0:
+        this.quality += 2;
         break;
       default:
-        item.quality += 1;
+        this.quality += 1;
     }
   }
+}
 
-  updateExpireItemQuality(item) {
-    switch (true) {
-      case item.sellIn < 0:
-        item.quality = 0;
-        break;
-      case item.sellIn <= 5:
-        item.quality += 3;
-        break;
-      case item.sellIn <= 10:
-        item.quality += 2;
-        break;
-      default:
-        item.quality += 1;
-    }
+class ExpireItem extends Item {
+  updateSellIn() {
+    this.sellIn -= 1;
   }
 
-  updateNormalItemQuality(item) {
+  updateQuality() {
     switch (true) {
-      case item.sellIn < 0:
-        item.quality -= 2;
+      case this.sellIn < 0:
+        this.quality = 0;
+        break;
+      case this.sellIn <= 5:
+        this.quality += 3;
+        break;
+      case this.sellIn <= 10:
+        this.quality += 2;
         break;
       default:
-        item.quality -= 1;
+        this.quality += 1;
     }
   }
+}
 
-  updateConjuredItemQuality(item) {
+class NormalItem extends Item {
+  updateSellIn() {
+    this.sellIn -= 1;
+  }
+
+  updateQuality() {
     switch (true) {
-      case item.sellIn < 0:
-        item.quality -= 4;
+      case this.sellIn < 0:
+        this.quality -= 2;
         break;
       default:
-        item.quality -= 2;
+        this.quality -= 1;
     }
+  }
+}
+
+class ConjuredItem extends Item {
+  updateSellIn() {
+    this.sellIn -= 1;
+  }
+
+  updateQuality() {
+    switch (true) {
+      case this.sellIn < 0:
+        this.quality -= 4;
+        break;
+      default:
+        this.quality -= 2;
+    }
+  }
+}
+
+class LegendaryItem extends Item {
+  updateSellIn() {
+  }
+
+  updateQuality() {
   }
 }
 
 module.exports = {
   Item,
+  ValueIncreaseItem,
+  ExpireItem,
+  NormalItem,
+  ConjuredItem,
+  LegendaryItem,
   Shop
 }
