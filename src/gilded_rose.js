@@ -64,6 +64,32 @@ class Shop {
 
     return this.items;
   }
+
+  updateValueIncreaseItemQuality(item) {
+    switch (true) {
+      case item.sellIn < 0:
+        item.quality += 2;
+        break;
+      default:
+        item.quality += 1;
+    }
+  }
+
+  updateExpireItemQuality(item) {
+    switch (true) {
+      case item.sellIn < 0:
+        item.quality = 0;
+        break;
+      case item.sellIn <= 5:
+        item.quality += 3;
+        break;
+      case item.sellIn <= 10:
+        item.quality += 2;
+        break;
+      default:
+        item.quality += 1;
+    }
+  }
 }
 
 module.exports = {
