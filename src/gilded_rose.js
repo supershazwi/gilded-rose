@@ -9,26 +9,27 @@ class Item {
 class Shop {
   constructor(items=[]){
     this.items = items;
+    this.valueIncreaseItemNames = ['Aged Brie'];
+    this.expireItemNames = ['Backstage passes to a TAFKAL80ETC concert'];
+    this.legendaryItemNames = ['Sulfuras, Hand of Ragnaros'];
+    this.conjuredItemNames = ['Conjured Item'];
   }
 
   updateQuality() {
-    const valueIncreaseItemNames = ['Aged Brie'];
-    const expireItemNames = ['Backstage passes to a TAFKAL80ETC concert'];
-    const legendaryItemNames = ['Sulfuras, Hand of Ragnaros'];
-    const conjuredItemNames = ['Conjured Item'];
-
     for (let i = 0; i < this.items.length; i++) {
-      if (legendaryItemNames.indexOf(this.items[i].name) === -1) {
-        this.updateSellIn(this.items[i]);
+      if (this.legendaryItemNames.includes(this.items[i].name)) {
+        break;
       }
 
-      if (expireItemNames.indexOf(this.items[i].name) !== -1) {
+      this.updateSellIn(this.items[i]);
+
+      if (this.expireItemNames.includes(this.items[i].name)) {
         this.updateExpireItemQuality(this.items[i]);
-      } else if (valueIncreaseItemNames.indexOf(this.items[i].name) !== -1) {
+      } else if (this.valueIncreaseItemNames.includes(this.items[i].name)) {
         this.updateValueIncreaseItemQuality(this.items[i]);
-      } else if (conjuredItemNames.indexOf(this.items[i].name) !== -1) {
+      } else if (this.conjuredItemNames.includes(this.items[i].name)) {
         this.updateConjuredItemQuality(this.items[i]);
-      } else if (legendaryItemNames.indexOf(this.items[i].name) === -1) {
+      } else {
         this.updateNormalItemQuality(this.items[i]);
       }
     }
